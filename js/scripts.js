@@ -50,10 +50,36 @@ let pokemonRepository = (
         function getAll() {
             return pokemonList;
         }
-    
+
+        // adding pokemon to the List
+        function addListItem(pokemon) {
+            //get the unordered list 
+            let list        = document.querySelector('.pokemon-list');
+
+            //create li-element and button
+            let listItem    = document.createElement("li");
+            let button      = document.createElement("button");
+
+            //give button text, css class and eventListener
+            button.innerText = pokemon.name;
+            button.classList.add('.pokemon');
+            button.addEventListener("click", () => showDetails(pokemon) );
+
+            //append button to listitem
+            listItem.appendChild(button);
+            
+            //append listItem to list
+            list.appendChild(listItem);
+        }
+
+        function showDetails(pokemon){
+            console.log(pokemon);
+        }
+
         return {
             add: add,
-            getAll: getAll
+            getAll: getAll,
+            addListItem: addListItem
         };
     }
 )();
@@ -62,24 +88,10 @@ let pokemonRepository = (
 pokemonRepository.add({name: "Pikachu", height: 0.4, types: ["Electro"]});
 
 
-
-//get div container
-const container = document.getElementById("pokemon--container");
-
 // iterate over pokemonList
 pokemonRepository.getAll().forEach( (pokemon) => {
-   
-    // save name and height in cache-variable
-    let pokemonProps = pokemon.name + " ( height: " + pokemon.height + " )";  
-
-    // conditional
-    if(pokemon.height >= 0.6)
-    {
-        pokemonProps += " - Wow, that's big!"     
+    
+    pokemonRepository.addListItem(pokemon);
     }
-
-    // insert div element with pokemon info into container
-    container.innerHTML += `<div class="pokemon"> ${pokemonProps} </div>`; 
-    }
-)  
+);
    
