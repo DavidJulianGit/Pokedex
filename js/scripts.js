@@ -16,76 +16,85 @@ let pokemonRepository = (
             return pokemonList;
         }
 
-        // adding pokemon to the List
+        // Inject listitems into the DOM
         function addListItem(pokemon) {
 
             //get the unordered list 
             let list     = document.querySelector('#pokemon-ul');
 
             //create li-element and button
-            let li       = document.createElement("li");
-            let pokeButton   = document.createElement("button");
+            let li       = document.createElement('li');
+            let pokeButton   = document.createElement('button');
 
             //give button text and eventListener
-            pokeButton.innerText = pokemon.name;
-            pokeButton.addEventListener("click", (e) => showDetails(pokemon, e) );
+            pokeButton.innerText = pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1);
+            pokeButton.addEventListener('click', (e) => showDetails(pokemon, e) );
             
             //assign css classes
             li.classList.add('list-group-item');
             li.classList.add('list-group-item-action');
-            li.classList.add('list-group-item-primary');
+            li.classList.add('border-light-subtlee');
+            li.classList.add('text-center');
+            li.classList.add('px-0');
 
             pokeButton.classList.add('btn');
-            
+            pokeButton.classList.add('list-btn');
+            pokeButton.classList.add('container-fluid');
             pokeButton.setAttribute('data-bs-toggle', 'modal');
             pokeButton.setAttribute('data-bs-target', '#pokeModal');
 
-            // append button to listitem
+            //append button to listitem
             li.appendChild(pokeButton);
             
-            // append listItem to list
+            //append listItem to list
             list.appendChild(li);
         }
 
-        function showModal(pokemon, e)
+        function deleteAllListitems()
+        {
+            let list     = document.querySelector('#pokemon-ul');
+            list.innerHTML = '' ;
+        }
+
+        function showModal(pokemon)
         {
             // capitalize the pokemons name
             let name = pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1);
-            
-            // Set title 
-            let modalTitle = document.getElementById("modalTitle");
+
+            let modalTitle = document.getElementById('modalTitle');
             modalTitle.innerText = name;
             
-            // Set img
-            let modalImg = document.getElementById("modalImg");
-            modalImg.setAttribute("src", pokemon.imageUrl);
-            modalImg.setAttribute("alt", "Image of a Pokemon namend " + name);
+            let modalImg = document.getElementById('modalImg');
+            modalImg.setAttribute('src', pokemon.imageUrl);
+            modalImg.setAttribute('alt', 'Image of a Pokemon namend ' + name);
 
-            // Set height
-            let modalHeight = document.getElementById("modalHeight");
-            modalHeight.innerText = pokemon.height * 10 + " cm";
+            let modalHeight = document.getElementById('modalHeight');
+            modalHeight.innerText = pokemon.height * 10 + ' cm';
             
-            let modalTypes = document.getElementById("modalTypes");
+            let modalWeight = document.getElementById('modalWeight');
+            modalWeight.innerText = pokemon.weight / 10 + ' kg';
+            
+            let modalTypes = document.getElementById('modalTypes');
             // Empty modalTypes ul
             modalTypes.innerHTML = '';
 
-            // Fill modalTypes ul with pokemon-types 
+            // Fill modalTypes ul 
             pokemon.types.forEach( item => {
-                console.log(item.type.name)
-                let li = document.createElement("li");
-                li.classList.add("list-group-item");
-                li.classList.add("border-0")
-                li.classList.add("p-0")
+                let li = document.createElement('li');
+                li.classList.add('list-group-item');
+                li.classList.add('border-0')
+                li.classList.add('p-0')
+                li.classList.add('m-0')
+                li.classList.add('text-capitalize')
                 li.innerText = item.type.name;
                 modalTypes.appendChild(li);
             })
         }
 
-
-        function showDetails(pokemon, e)
+        function showDetails(pokemon)
         {
             loadDetails(pokemon).then( () => {
-                showModal(pokemon, e)   
+                showModal(pokemon)   
             });
         }
         
@@ -99,10 +108,12 @@ let pokemonRepository = (
                     return response.json();
                 })
                 .then( (json) => {
-                    json.results.forEach( (item) => {
+                    json.results.forEach( (item, index) => {
+                        
                         let pokemon = {
                                         name: item.name,
-                                        detailsUrl: item.url
+                                        detailsUrl: item.url,
+                                        index: index
                                       };
                         add(pokemon);
                     });
@@ -122,9 +133,11 @@ let pokemonRepository = (
                     return response.json();
                 })
                 .then( (details) => {
+                    console.log(details);
                     // Now we add the details to the item
                     item.imageUrl = details.sprites.front_default;
                     item.height = details.height;
+                    item.weight = details.weight;
                     item.types = details.types;
                 })
                 .catch( (e) => {
@@ -137,33 +150,84 @@ let pokemonRepository = (
             let list = document.querySelector('#pokemon-ul');
 
             //create li-element and button
-            let li = document.createElement("li");
+            let li = document.createElement('li');
             
             //assign css class, text-content and id, which is used for removing the element
             li.classList.add('list-group-item');
             li.classList.add('list-group-item-action');
-            li.innerText = "Loading - Please wait."
-            li.id = "loading"        
-
+             
+            li.id = 'loading'
+            const loadingSpinnerHTML = `
+                                        <div class="d-flex justify-content-center">
+                                            <div class="spinner-border" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </div>
+                                        `;
+            li.innerHTML = loadingSpinnerHTML;
             //append listItem to list
             list.appendChild(li);
         }
 
         function hideLoadingMessage(){
             // get and remove loadingMessage element
-            const loadingMessage = document.getElementById("loading");
+            const loadingMessage = document.getElementById('loading');
             loadingMessage.remove();
         }
-        
+
+        // Sort an array by given key
+        function sortArrayByKey(array, key){
+            return array.sort( (a, b) => 
+            {
+                if (a[key] < b[key]) 
+                {
+                    return -1;
+                } 
+                else if (a[key] > b[key]) 
+                {
+                    return 1;
+                } 
+                else 
+                {
+                    return 0;
+                }
+            });
+        }
+
+        // Sorts the list, delets currents listitems and add in the newly sorted items
+        function sortListBy(key){
+            // key can either be 'name' or 'index'
+
+            // get the sorted list
+            let newPokemonList = sortArrayByKey(pokemonList, key);  
+
+            // remove listitem from repository
+            deleteAllListitems();
+
+            // add items to DOM
+            newPokemonList.forEach( (pokemon) => {
+                addListItem(pokemon);
+            });
+        }
+
         return {
             add: add,
             getAll: getAll,
             addListItem: addListItem,
             loadList: loadList,
-            loadDetails: loadDetails
+            loadDetails: loadDetails,
+            deleteAllListitems: deleteAllListitems,
+            sortListBy: sortListBy,
         };
     }
 )();
+
+
+let btnSortByName = document.getElementById('btn-sort-name');
+let btnSortByIndex = document.getElementById('btn-sort-index');
+
+btnSortByName.addEventListener('click', () => pokemonRepository.sortListBy('name'));
+btnSortByIndex.addEventListener('click', () => pokemonRepository.sortListBy('index'));
 
 pokemonRepository.loadList().then( () => {
     pokemonRepository.getAll().forEach( (pokemon) => {
