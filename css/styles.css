@@ -1,167 +1,34 @@
-*{
-    box-sizing: border-box;
-
-    --black: #213060;
-    --primary: #9212FC;
-    --primary-med: #3E6ABC;
-    --primary-dark: #143885;
-    --secondary: #FBC418;
-    --secondary-modal-bg: #FFFCF2;
-    --secondary-white: rgba(251, 196, 24,0.025);
-    --secondary-light: rgba(251, 196, 24,0.3); 
-    --white: #ffffff;
-    
-    --gradient-start:       rgba(252,163,17,0.3029586834733894);
-    --gradient-middle:      rgba(252,84,18,0.30015756302521013);
-    --gradient-end:         rgba(146,18,252,0.19931722689075626);
-    --box-background:       rgba(240, 240, 240, 0.4);
-    --box-shadow: rgba(126, 66, 179, 0.1);
-
-    font-family: 'Inter', sans-serif;
-    font-size: 1rem;
-    font-weight: 400;
-    color: var(--primary-dark);
+.list-btn, .list-btn:focus, .list-btn:focus-visible{
+    border: none;
+    color: #213060;
 }
-html, body{
-    margin: 0;
-    padding: 0;
-   
+ /* Hide scrollbar in firefox*/
+html{
+    scrollbar-width: none;
 }
-body{
-    background: linear-gradient(165deg, var(--gradient-start) 0%, var(--gradient-middle) 49%, var(--gradient-end) 100%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+/* Hide scrollbar for Webkit browsers (Chrome, Safari) */
+body::-webkit-scrollbar {
+    width: 0rem;
 }
-.pokemon-logo{
-    margin: 2em;
-    max-width: 400px;
-}
-.pokemon--container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 500px;
-    gap: 1em;
-    padding: 2em;
-    background-color: var(--secondary-white);
-    border-radius: 6px;
-    border: 2px solid var(--primary-dark);
-    box-shadow: 0px 0px 14px var(--box-shadow);
-}
-.pokemon-ul{
-    padding: 0;
-    margin: 0;
-    width:100%;
-}
-.pokemon-li{
-    margin-bottom: 1em;
-    padding: 0;
-    text-align:center;
-    list-style-type: none;
-    &:last-of-type{
-        margin:0;
-    }
-}
-.pokemon-button{
-    padding: 1em;
-    width: 100%;
-    height: 100%;
-    text-transform: capitalize;
-    font-weight: 600;
-    background: var(--box-background);
-    border: 2px solid var(--primary-med);
-    border-radius: 6px;
-    box-shadow: 0px 0px 3px var(--box-shadow);
-    transition: background 200ms ease;
-
-    &:hover{
-        background: var(--secondary-light); 
-        color: var(--primary-dark); 
-        cursor: pointer; 
-    }
-}
-
-#modal-container {
-    display: none;
-  }
   
-#modal-container.is-visible {
-    position: fixed;
-    padding: 20px;
-    box-sizing: border-box;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-  
-    /* to show it above other content */
-    z-index: 999; 
-  
-    /* to allow scrolling if the screen is not high enough*/
-    overflow: auto; 
-  
-    /* this is used to center the modal */
-    display: grid;
-    text-align: center;
-}
-.modal{
-    position: fixed;
-    padding: 1em;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-width: 200px;
-    font-weight: 600;
-    background: var(--secondary-modal-bg);
-    border: 3px solid var(--secondary);
-    border-radius: 6px;
-    box-shadow: 0px 0px 3px var(--box-shadow);
-    /*transition: background 200ms ease;
-
-    &:hover{
-        background: var(--secondary-light); 
-        color: var(--primary-dark); 
-        cursor: pointer; 
-    }*/
-}
-.modal-pokemon-name{
-    font-size: 1rem;;
-    text-transform: capitalize;
-    font-weight: 700;
-    margin: 0;
-    margin-bottom: 0.5em;
-}
-.modal-h3{
-    width: 100%;
-    padding-top: 0.5em;
-    border-top: 1px solid var(--primary-med);
-    font-size: 0.9rem;
-    font-weight: 600;
-    margin: 0.5em auto;
-}
-.modal-pokemon-text{
-    font-size: 0.8rem;
-    margin: 0;
-    margin-bottom: 0.2em;
-}
-.modal-pokemon-types-ul{
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    width:100%;
-}
-
-.modal-close{
-    position: absolute;
-    top: 5px;
-    right: 5px;
+body::after {
+    content: '';
     display: block;
-    width: 20px;
-    height: 20px;
-    padding: 0em;
-    border-radius: 4px;  
-    background-position: right;
-    cursor: pointer;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    background-image: url('../img/relaxo.png'); 
+    background-position: bottom right;
+    background-repeat: no-repeat;
+    background-size: contain; 
+    opacity: 0.5;
+    width: 50%; 
+    height: 50%; 
+    z-index: -1; 
 }
+
+.text-small{
+    font-size: 0.8rem;
+}
+
+
