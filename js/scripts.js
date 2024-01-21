@@ -33,13 +33,14 @@ let pokemonRepository = (
             //assign css classes
             li.classList.add('list-group-item');
             li.classList.add('list-group-item-action');
-            li.classList.add('border-light-subtlee');
             li.classList.add('text-center');
             li.classList.add('px-0');
+            
 
             pokeButton.classList.add('btn');
             pokeButton.classList.add('list-btn');
-            pokeButton.classList.add('container-fluid');
+            pokeButton.classList.add('w-100');
+            //pokeButton.classList.add('text-truncate');
             pokeButton.setAttribute('data-bs-toggle', 'modal');
             pokeButton.setAttribute('data-bs-target', '#pokeModal');
 
