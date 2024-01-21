@@ -2,6 +2,7 @@ let pokemonRepository = (
     function () 
     {
         let pokemonList = [];
+        let filteredPokemonList = [];
         let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
 
 
@@ -28,7 +29,7 @@ let pokemonRepository = (
 
             //give button text and eventListener
             pokeButton.innerText = pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1);
-            pokeButton.addEventListener('click', (e) => showDetails(pokemon, e) );
+            pokeButton.addEventListener('click', (e) => showDetails(pokemon) );
             
             //assign css classes
             li.classList.add('list-group-item');
@@ -199,14 +200,42 @@ let pokemonRepository = (
         function sortListBy(key){
             // key can either be 'name' or 'index'
 
-            // get the sorted list
-            let newPokemonList = sortArrayByKey(pokemonList, key);  
+            let sortedList = [];
 
+            // if no search has been performed, filteredPokemonList is empty
+            if(filteredPokemonList.length > 0)
+            {
+                 // get the sorted list
+                sortedList = sortArrayByKey(filteredPokemonList, key);  
+            }
+            else{
+                 // get the sorted list
+                 sortedList = sortArrayByKey(pokemonList, key); 
+            }
+           
+            console.log(sortedList);
             // remove listitem from repository
             deleteAllListitems();
 
             // add items to DOM
-            newPokemonList.forEach( (pokemon) => {
+            sortedList.forEach( (pokemon) => {
+                addListItem(pokemon);
+            });
+        }
+
+        // Function to filter the PokemonList based search-field input
+        function filterListBy(searchTerm) {
+            
+            const filteredData = pokemonList.filter( item => {
+                //return item.name.toLowerCase().includes(searchTerm.toLowerCase());
+                return item.name.slice(0, searchTerm.length) === searchTerm;
+            });
+            filteredPokemonList = filteredData.slice();
+
+            deleteAllListitems();
+
+            // add items to DOM
+            filteredPokemonList.forEach( (pokemon) => {
                 addListItem(pokemon);
             });
         }
@@ -219,17 +248,21 @@ let pokemonRepository = (
             loadDetails: loadDetails,
             deleteAllListitems: deleteAllListitems,
             sortListBy: sortListBy,
+            filterListBy: filterListBy
         };
     }
 )();
 
-
+// Setting up EventListeners
 let btnSortByName = document.getElementById('btn-sort-name');
 let btnSortByIndex = document.getElementById('btn-sort-index');
+let inputSearch = document.getElementById('search');
 
-btnSortByName.addEventListener('click', () => pokemonRepository.sortListBy('name'));
-btnSortByIndex.addEventListener('click', () => pokemonRepository.sortListBy('index'));
+btnSortByName.addEventListener('click', () => pokemonRepository.sortListBy('name') );
+btnSortByIndex.addEventListener('click', () => pokemonRepository.sortListBy('index') );
+search.addEventListener('input', (e) => pokemonRepository.filterListBy(e.target.value) );
 
+// Putting the ListItems into the DOM
 pokemonRepository.loadList().then( () => {
     pokemonRepository.getAll().forEach( (pokemon) => {
         pokemonRepository.addListItem(pokemon);
