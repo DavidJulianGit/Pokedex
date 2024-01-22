@@ -39,9 +39,13 @@
       <button type="button" class="btn btn-outline-primary btn-sm mx-2 px-3 text-nowrap" id="btn-sort-index">Pokédex #</button>
       <button type="button" class="btn btn-outline-primary btn-sm mx-2 px-3" id="btn-sort-name">Name</button>  
     </div>
-    <!-- Search input -->
+
+    <!-- Search -->
     <div class="container col-10 col-sm-6 col-md-5 col-lg-4 col-xl-2 my-3">
-      <input type="text" placeholder="Search by Name" class="form-control" id="search" aria-label="search pokemon"> 
+      <div class="input-group mb-3">
+        <input type="text" placeholder="Search by Name" class="form-control" id="search" aria-label="search pokemon"> 
+        <span class="input-group-text"><button disabled type="button" class="btn-close" id="btnResetSearch" aria-label="Close"></button></span>
+      </div>
     </div>
    
     <!-- List of Pokemon --------------------------------------------------------------------------------------------->

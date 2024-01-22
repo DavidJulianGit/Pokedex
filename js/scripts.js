@@ -4,7 +4,11 @@ let pokemonRepository = (
         let pokemonList = [];
         let filteredPokemonList = [];
         let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
-
+        let modalImg = document.getElementById('modalImg');
+        let modalTitle = document.getElementById('modalTitle');
+        let modalHeight = document.getElementById('modalHeight');
+        let modalWeight = document.getElementById('modalWeight');
+        let modalTypes = document.getElementById('modalTypes');
 
         // function for adding a pokemon object to pokemonList
         function add(pokemon) 
@@ -60,23 +64,19 @@ let pokemonRepository = (
 
         function showModal(pokemon)
         {
+    
             // capitalize the pokemons name
             let name = pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1);
 
-            let modalTitle = document.getElementById('modalTitle');
             modalTitle.innerText = name;
-            
-            let modalImg = document.getElementById('modalImg');
+          
             modalImg.setAttribute('src', pokemon.imageUrl);
             modalImg.setAttribute('alt', 'Image of a Pokemon namend ' + name);
 
-            let modalHeight = document.getElementById('modalHeight');
             modalHeight.innerText = pokemon.height * 10 + ' cm';
             
-            let modalWeight = document.getElementById('modalWeight');
             modalWeight.innerText = pokemon.weight / 10 + ' kg';
             
-            let modalTypes = document.getElementById('modalTypes');
             // Empty modalTypes ul
             modalTypes.innerHTML = '';
 
@@ -92,9 +92,20 @@ let pokemonRepository = (
                 modalTypes.appendChild(li);
             })
         }
+        function resetModal()
+        {
+            modalImg.removeAttribute('src');
+            modalImg.removeAttribute('alt');
+            modalTitle.innerText = '';
+            modalHeight.innerText = '';
+            modalWeight.innerText = '';
+            modalTypes.innerHTML = '';
+        }
 
         function showDetails(pokemon)
         {
+            resetModal();
+
             loadDetails(pokemon).then( () => {
                 showModal(pokemon)   
             });
@@ -257,10 +268,30 @@ let pokemonRepository = (
 let btnSortByName = document.getElementById('btn-sort-name');
 let btnSortByIndex = document.getElementById('btn-sort-index');
 let inputSearch = document.getElementById('search');
+let btnResetSearch = document.getElementById('btnResetSearch');
 
 btnSortByName.addEventListener('click', () => pokemonRepository.sortListBy('name') );
 btnSortByIndex.addEventListener('click', () => pokemonRepository.sortListBy('index') );
-search.addEventListener('input', (e) => pokemonRepository.filterListBy(e.target.value) );
+search.addEventListener('input', (e) => {
+    // if input value is empty, resetButton is disabled
+    if(e.target.value === '')
+    {
+        btnResetSearch.disabled = true;
+    }
+    else{
+        btnResetSearch.disabled = false;
+    }
+
+    pokemonRepository.filterListBy(e.target.value)
+});
+btnResetSearch.addEventListener('click', () => {
+    // reset search input value
+    search.value = '';
+    // reset list through filtering by ''
+    pokemonRepository.filterListBy('');
+    //disable resetButton
+    btnResetSearch.disabled = true;
+});
 
 // Putting the ListItems into the DOM
 pokemonRepository.loadList().then( () => {
