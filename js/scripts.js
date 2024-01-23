@@ -239,7 +239,7 @@ let pokemonRepository = (
             
             const filteredData = pokemonList.filter( item => {
                 //return item.name.toLowerCase().includes(searchTerm.toLowerCase());
-                return item.name.slice(0, searchTerm.length) === searchTerm;
+                return item.name.slice(0, searchTerm.length).toLowerCase() === searchTerm.toLowerCase();
             });
             filteredPokemonList = filteredData.slice();
 
