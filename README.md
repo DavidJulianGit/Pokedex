@@ -19,7 +19,7 @@ The objective of this project was to build a small web application that loads da
 
 ## Technology
 
--  **HTML/CSS**: For structuring and styling the web app.
+-  **HTML/CSS/Bootstrap/Bootswatch**: For structuring and styling the web app.
 -  **JavaScript**: Core functionality of the app including API interactions and UI updates.
 -  **ESLint**: Code is formatted according to ESLint rules for consistent and error-free code.
 -  **UI Pattern**: Uses a modal for detailed views of each Pokémon.
