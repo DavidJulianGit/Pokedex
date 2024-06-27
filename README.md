@@ -32,13 +32,7 @@ To run this project locally, follow these steps:
    ```bash
    git clone https://github.com/DavidJulianGit/Pokedex.git
    ```
-2. **Navigate to the project directory**
-
-   ```bash
-   cd pokedex-app
-   ```
-
-3. **Start the app**
+2. **Start the app**
    Open index.html in a browser.
 
 ## Deployment
